@@ -6,7 +6,7 @@ import './CartItem.css';
 const CartItem = ({ onContinueShopping }) => {
     const cart = useSelector(state => state.cart.items);
     const dispatch = useDispatch();
-    const [showProductList, setShowProductList] = useState(false);
+    //const [showProductList, setShowProductList] = useState(false);
 
     // Calculate total amount for all products in the cart
     const calculateTotalAmount = () => {
@@ -14,7 +14,7 @@ const CartItem = ({ onContinueShopping }) => {
     };
 
     const handleContinueShopping = (e) => {
-        setShowProductList(true);
+        //setShowProductList(true);
     };
 
 
@@ -59,9 +59,6 @@ const CartItem = ({ onContinueShopping }) => {
                 <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
                 <br />
                 <button className="get-started-button1">Checkout</button>
-            </div>
-            <div className={`product-list-container ${showProductList ? 'visible' : ''}`}>
-                <ProductList />
             </div>
         </div>
     );
