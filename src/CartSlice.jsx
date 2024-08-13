@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const CartSlice = createSlice({
-    name: 'carty',
+    name: 'cart',
     initialState: {
         items: [], // Initialize items as an empty array
     },
@@ -25,9 +25,13 @@ export const CartSlice = createSlice({
                 itemToUpdate.quantity = quantity;
             }
         },
+        totalQuantity: (state) => {
+            let counter = 0;
+            return counter = state.items.forEach(item => counter += item.quantity);
+        },
     },
 });
 
-export const { addItem, removeItem, updateQuantity } = CartSlice.actions;
+export const { addItem, removeItem, updateQuantity, totalQuantity } = CartSlice.actions;
 
 export default CartSlice.reducer;
