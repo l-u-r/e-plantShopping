@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
@@ -6,37 +6,51 @@ import './CartItem.css';
 const CartItem = ({ onContinueShopping , onCart}) => {
     const cart = useSelector(state => state.cart.items);
     const dispatch = useDispatch();
+    const [totalAmount, setTotalAmount] = useState(0);
 
     // Calculate total amount for all products in the cart
-    const calculateTotalAmount = () => {
-        let totalCost = 0;
-        cart.forEach((item) => {
-            totalCost += item.cost * item.quantity;
-        });
-    };
+    useEffect(() => {
+        const calculateTotalAmount = () => {
+            let totalCost = 0;
+            cart.forEach((item) => {
+                const cost = parseFloat(item.cost.replace('$', ''));
+                const quantity = parseInt(item.quantity, 10);
+                totalCost += cost * quantity;
+            });
+            setTotalAmount(totalCost);
+        };
+        calculateTotalAmount();
+    }, [cart]);
 
     const handleContinueShopping = (e) => {
         onContinueShopping(e);
     };
 
     const handleIncrement = (item) => {
-        item.quantity++;
-        dispatch(updateQuantity(item));
+        const updatedItem = { ...item, quantity: item.quantity + 1 };
+        dispatch(updateQuantity(updatedItem));
     };
 
     const handleDecrement = (item) => {
-        item.quantity--;
-        dispatch(updateQuantity(item));
+        if (item.quantity > 1) {
+            const updatedItem = { ...item, quantity: item.quantity - 1 };
+            dispatch(updateQuantity(updatedItem));
+        } else {
+            dispatch(removeItem(item.name));
+        }
     };
 
     const handleRemove = (item) => {
-        dispatch(removeItem(item));
+        dispatch(removeItem(item.name));
     };
 
     // Calculate total cost based on quantity for an item
     const calculateTotalCost = (item) => {
         let totalCost = 0;
-        totalCost += item.cost * item.quantity;
+        const cost = parseFloat(item.cost.replace('$', ''));
+        const quantity = parseInt(item.quantity, 10);
+        totalCost = cost * quantity;
+        return totalCost.toFixed(2);
     };
 
     const handleCheckoutShopping = (e) => {
@@ -45,7 +59,7 @@ const CartItem = ({ onContinueShopping , onCart}) => {
 
     return (
         <div className="cart-container">
-            <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+            <h2 style={{ color: 'black' }}>Total Cart Amount: ${totalAmount.toFixed(2)}</h2>
             <div>
                 {cart.map(item => (
                     <div className="cart-item" key={item.name}>

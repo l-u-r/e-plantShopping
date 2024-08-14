@@ -8,9 +8,8 @@ function ProductList() {
     const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
-    const [totalItems, setTotalItems] = useState({});
-    const cart = useSelector(state => state.cart.items);
-    const total = 0;
+    const dispatch = useDispatch();
+    const totalItemCount = useSelector(state => state.cart.totalItemCount);
 
     const plantsArray = [
         {
@@ -286,7 +285,7 @@ function ProductList() {
                                     <circle cx="184" cy="216" r="12"></circle>
                                     <path d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8" fill="none" stroke="#faf9f9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" id="mainIconPathAttribute"></path>
                                 </svg>
-                                <h1 className='cart_quantity_count'>{total}</h1>
+                                <h1 className='cart_quantity_count'>{totalItemCount}</h1>
                             </h1>
                         </a>
                     </div>
